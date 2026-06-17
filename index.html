@@ -3,326 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>A股国家队 ETF 三因子 Sentinel</title>
+  <title>A股大盘云图</title>
   <style>
-    :root {
-      --bg: #f6f7fb;
-      --surface: #ffffff;
-      --ink: #182033;
-      --muted: #64748b;
-      --line: #e5e7eb;
-      --brand: #2563eb;
-      --brand-dark: #172554;
-      --shadow: 0 8px 24px rgba(15,23,42,.08);
-      --radius: 16px;
-    }
-    * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.55;
-    }
-    header {
-      background: linear-gradient(135deg, var(--brand-dark), var(--brand));
-      color: white;
-      padding: calc(22px + env(safe-area-inset-top)) clamp(16px, 5vw, 28px) 24px;
-    }
-    .hero { max-width: 1180px; margin: 0 auto; }
-    h1 { margin: 0; font-size: clamp(24px, 6vw, 36px); line-height: 1.15; letter-spacing: -.03em; }
-    h2 { margin: 0 0 12px; font-size: clamp(18px, 4vw, 22px); }
-    p { margin: 0 0 10px; }
-    .subtitle { margin-top: 10px; color: rgba(255,255,255,.82); font-size: clamp(13px, 3.4vw, 16px); }
-    main { max-width: 1180px; margin: 0 auto; padding: clamp(12px, 4vw, 20px); }
-    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-    .card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: clamp(14px, 4vw, 18px);
-      box-shadow: var(--shadow);
-      min-width: 0;
-    }
-    .metric {
-      font-size: clamp(28px, 9vw, 34px);
-      line-height: 1.12;
-      font-weight: 800;
-      letter-spacing: -.03em;
-      word-break: break-word;
-    }
-    .muted { color: var(--muted); font-size: 13px; }
-    .section { margin-top: 16px; }
-    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -2px; }
-    table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 760px; }
-    th, td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-    th { background: #f8fafc; color: #334155; white-space: nowrap; }
-    td { overflow-wrap: anywhere; }
-    .badge { display: inline-block; padding: 5px 11px; border-radius: 999px; font-weight: 800; font-size: .78em; white-space: nowrap; }
-    .neutral { background:#e2e8f0; color:#334155; }
-    .watch { background:#fef3c7; color:#92400e; }
-    .strong_watch { background:#fee2e2; color:#991b1b; }
-    button {
-      min-height: 44px;
-      border: 0;
-      border-radius: 12px;
-      background: var(--brand);
-      color: white;
-      padding: 10px 16px;
-      cursor: pointer;
-      font-weight: 800;
-      font-size: 15px;
-      touch-action: manipulation;
-    }
-    button:disabled { opacity: .6; }
-    button:focus-visible { outline: 3px solid rgba(37,99,235,.3); outline-offset: 2px; }
-    pre { white-space: pre-wrap; background:#0f172a; color:#dbeafe; padding:12px; border-radius:10px; max-height:240px; overflow:auto; }
-
-    .section-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:12px; }
-    .section-head h2 { margin-bottom:4px; }
-    .market-map {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      grid-auto-rows: minmax(112px, auto);
-      gap: 10px;
-    }
-    .market-tile {
-      position: relative;
-      min-height: 112px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px;
-      overflow: hidden;
-      background: #f8fafc;
-    }
-    .market-tile::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: .16;
-      background: var(--tile-color, #94a3b8);
-    }
-    .market-tile > * { position: relative; z-index: 1; }
-    .market-tile.up { --tile-color: #dc2626; border-color: rgba(220,38,38,.18); }
-    .market-tile.down { --tile-color: #16a34a; border-color: rgba(22,163,74,.18); }
-    .market-tile.flat { --tile-color: #64748b; }
-    .market-code { font-weight: 900; font-size: 18px; letter-spacing: -.02em; }
-    .market-name { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .market-pct { margin-top: 8px; font-size: 24px; line-height: 1; font-weight: 900; }
-    .market-meta { margin-top: 8px; color: #475569; font-size: 12px; display:grid; gap:2px; }
-    .map-legend { display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px; }
-    .legend-dot { display:inline-block; width:9px; height:9px; border-radius:99px; margin-right:4px; vertical-align:middle; }
-    .dot-up { background:#dc2626; } .dot-down { background:#16a34a; } .dot-flat { background:#64748b; }
-
-    @media (max-width: 920px) {
-      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 640px) {
-      header { padding-bottom: 20px; }
-      main { padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
-      .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .grid .card:first-child { grid-column: 1 / -1; }
-      .card { border-radius: 14px; }
-      .section { margin-top: 12px; }
-      #signal-meta { font-size: 13px; color: var(--muted); }
-      #triggered.metric { font-size: clamp(22px, 7vw, 30px); }
-      button { width: 100%; margin-top: 4px; }
-
-      .section-head { display:block; }
-      .market-map { grid-template-columns: 1fr 1fr; gap:8px; }
-      .market-tile { min-height: 104px; padding: 10px; }
-      .market-code { font-size: 16px; }
-      .market-pct { font-size: 21px; }
-
-      .responsive-table { min-width: 0; }
-      .responsive-table thead { display: none; }
-      .responsive-table,
-      .responsive-table tbody,
-      .responsive-table tr,
-      .responsive-table td { display: block; width: 100%; }
-      .responsive-table tr {
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        padding: 8px 10px;
-        margin-bottom: 10px;
-        background: #fff;
-      }
-      .responsive-table td {
-        display: grid;
-        grid-template-columns: 92px minmax(0, 1fr);
-        gap: 8px;
-        border-bottom: 0;
-        padding: 6px 0;
-        font-size: 13px;
-      }
-      .responsive-table td::before {
-        content: attr(data-label);
-        color: var(--muted);
-        font-weight: 700;
-      }
-      .responsive-table td[data-label="解释"],
-      .responsive-table td[data-label="消息"] { grid-template-columns: 1fr; }
-      .responsive-table td[data-label="解释"]::before,
-      .responsive-table td[data-label="消息"]::before { margin-bottom: -2px; }
-    }
-
-    @media (max-width: 380px) {
-      .grid { grid-template-columns: 1fr; }
-      .metric { font-size: 28px; }
-      .responsive-table td { grid-template-columns: 82px minmax(0, 1fr); }
-    }
+    :root { --bg:#f5f7fb; --surface:#fff; --ink:#172033; --muted:#64748b; --line:#e5e7eb; --red:#dc2626; --green:#16a34a; --flat:#64748b; --brand:#1d4ed8; --shadow:0 10px 28px rgba(15,23,42,.08); --radius:18px; }
+    *{box-sizing:border-box} html{-webkit-text-size-adjust:100%} body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+    header{background:linear-gradient(135deg,#0f172a,#1d4ed8);color:#fff;padding:calc(22px + env(safe-area-inset-top)) clamp(16px,5vw,30px) 22px}.hero{max-width:1220px;margin:0 auto}h1{margin:0;font-size:clamp(28px,7vw,44px);line-height:1.08;letter-spacing:-.04em}.subtitle{margin-top:10px;color:rgba(255,255,255,.82);font-size:clamp(13px,3.4vw,16px)}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.tab{color:#dbeafe;text-decoration:none;border:1px solid rgba(255,255,255,.25);padding:9px 13px;border-radius:999px;font-weight:800;font-size:14px}.tab.active,.tab:hover{background:#fff;color:#1e3a8a}
+    main{max-width:1220px;margin:0 auto;padding:clamp(12px,4vw,22px)}.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(14px,4vw,18px);margin-bottom:16px}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;margin-bottom:12px}h2{margin:0 0 4px;font-size:clamp(19px,4vw,24px)}.muted{color:var(--muted);font-size:13px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.switch{min-height:38px;border:1px solid var(--line);background:#f8fafc;color:#334155;border-radius:999px;padding:8px 13px;font-weight:900;cursor:pointer}.switch.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+    .cloud{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));grid-auto-flow:dense;gap:10px}.tile{position:relative;min-height:112px;overflow:hidden;border:1px solid var(--line);border-radius:15px;background:#f8fafc;padding:12px}.tile::before{content:"";position:absolute;inset:0;background:var(--tile-color,#94a3b8);opacity:.16}.tile>*{position:relative;z-index:1}.tile.up{--tile-color:var(--red);border-color:rgba(220,38,38,.2)}.tile.down{--tile-color:var(--green);border-color:rgba(22,163,74,.2)}.tile.flat{--tile-color:var(--flat)}.code{font-weight:950;font-size:17px;letter-spacing:-.02em}.name{font-size:13px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pct{font-size:clamp(23px,5vw,30px);font-weight:950;line-height:1;margin-top:9px}.up .pct{color:#991b1b}.down .pct{color:#166534}.meta{display:grid;gap:2px;margin-top:8px;font-size:12px;color:#475569}.legend{display:flex;gap:10px;flex-wrap:wrap}.dot{display:inline-block;width:9px;height:9px;border-radius:99px;margin-right:4px}.dot.red{background:var(--red)}.dot.green{background:var(--green)}.dot.gray{background:var(--flat)}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}.stat{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:14px}.stat b{display:block;font-size:clamp(22px,6vw,30px);line-height:1.1}.footer-note{color:var(--muted);font-size:12px;margin-top:10px}
+    @media(max-width:720px){.section-head{display:block}.toolbar{margin-top:10px}.stats{grid-template-columns:1fr 1fr}.cloud{grid-template-columns:1fr 1fr}.tile{min-height:104px;padding:10px}.tab{flex:1;text-align:center}.switch{flex:1}.code{font-size:16px}}
+    @media(max-width:380px){.cloud,.stats{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <header>
-    <div class="hero">
-      <h1>A股国家队 ETF 三因子 Sentinel</h1>
-      <div class="subtitle">重点追踪多只沪深300ETF：510300、510310、510330、510360、159919；并保留 510050、512100 作为宽基对照</div>
-    </div>
-  </header>
+  <header><div class="hero"><h1>A股大盘云图</h1><div class="subtitle">用指数、行业板块、概念板块涨跌幅快速观察市场温度。红色为上涨，绿色为下跌。</div><nav class="tabs"><a class="tab active" href="./">大盘云图</a><a class="tab" href="./national-team.html">国家队三因子</a></nav></div></header>
   <main>
-    <div class="grid">
-      <section class="card">
-        <div class="muted">今日/最新信号</div>
-        <div id="signal" class="metric">加载中...</div>
-        <p id="signal-meta"></p>
-        <button id="run">立即更新数据</button>
-      </section>
-      <section class="card">
-        <div class="muted">综合得分</div>
-        <div id="score" class="metric">--</div>
-      </section>
-      <section class="card">
-        <div class="muted">可信度</div>
-        <div id="confidence" class="metric">--</div>
-      </section>
-      <section class="card">
-        <div class="muted">触发 ETF</div>
-        <div id="triggered" class="metric">--</div>
-      </section>
-    </div>
-
-    <section class="card section">
-      <h2>模型解释</h2>
-      <p id="explanation">--</p>
-      <p class="muted">说明：免费日频接口无法稳定提供 ETF 实时 IOPV，MVP 用 ETF 相对跟踪指数日涨跌近似折溢价因子；成交量放大和相对强度为另外两个因子。</p>
-    </section>
-
-
-    <section class="card section">
-      <div class="section-head">
-        <div>
-          <h2>大盘云图</h2>
-          <p id="market-map-meta" class="muted">按已追踪宽基 ETF 的涨跌、成交额与因子得分绘制；红色偏强，绿色偏弱。</p>
-        </div>
-        <div class="map-legend" aria-label="云图图例">
-          <span><i class="legend-dot dot-up"></i>上涨/偏强</span>
-          <span><i class="legend-dot dot-down"></i>下跌/偏弱</span>
-          <span><i class="legend-dot dot-flat"></i>震荡</span>
-        </div>
-      </div>
-      <div id="market-map" class="market-map" aria-live="polite">加载中...</div>
-    </section>
-
-    <section class="card section">
-      <h2>单只 ETF 因子表</h2>
-      <div class="table-wrap">
-        <table class="responsive-table"><thead><tr><th>代码</th><th>名称</th><th>日期</th><th>折溢价近似</th><th>放量</th><th>相对强度</th><th>因子得分</th><th>可信度</th><th>解释</th></tr></thead><tbody id="factors"></tbody></table>
-      </div>
-    </section>
-
+    <section class="stats" aria-label="市场概览"><div class="stat"><span class="muted">交易日期</span><b id="trade-date">--</b></div><div class="stat"><span class="muted">指数上涨</span><b id="index-up">--</b></div><div class="stat"><span class="muted">行业上涨</span><b id="industry-up">--</b></div><div class="stat"><span class="muted">概念上涨</span><b id="concept-up">--</b></div></section>
+    <section class="card"><div class="section-head"><div><h2>主要指数</h2><p class="muted">宽基指数涨跌幅与成交额概览。</p></div><div class="legend"><span><i class="dot red"></i>涨</span><span><i class="dot green"></i>跌</span><span><i class="dot gray"></i>平</span></div></div><div id="index-cloud" class="cloud">加载中...</div></section>
+    <section class="card"><div class="section-head"><div><h2>板块云图</h2><p id="board-meta" class="muted">行业板块 / 概念板块可切换。</p></div><div class="toolbar"><button class="switch active" data-type="industry">行业板块</button><button class="switch" data-type="concept">概念板块</button></div></div><div id="board-cloud" class="cloud">加载中...</div><p class="footer-note">说明：当前 MVP 优先保证页面结构和静态展示；实时东方财富板块接口接入后，会自动替换为最新板块行情。</p></section>
   </main>
 <script>
-const API_BASE = new URL(window.A_SHARE_ETF_API_BASE || 'api/', window.location.href);
-const STATIC_BASE = new URL('data/', window.location.href);
-const apiUrl = path => new URL(path, API_BASE).toString();
-const staticUrl = path => new URL(path, STATIC_BASE).toString();
-const fmt = n => (n === null || n === undefined || Number.isNaN(Number(n))) ? '--' : Number(n).toFixed(1);
-const td = (label, value) => `<td data-label="${label}">${value ?? ''}</td>`;
-
-const fmtPct = n => (n === null || n === undefined || Number.isNaN(Number(n))) ? '--' : `${Number(n).toFixed(2)}%`;
-const fmtAmount = n => {
-  const v = Number(n || 0);
-  if (!v) return '--';
-  if (v >= 100000000) return `${(v / 100000000).toFixed(1)}亿`;
-  return `${(v / 10000).toFixed(0)}万`;
-};
-function renderMarketMap(data) {
-  const wrap = document.getElementById('market-map');
-  const meta = document.getElementById('market-map-meta');
-  if (!wrap) return;
-  const nodes = data?.nodes || [];
-  if (!nodes.length) {
-    wrap.textContent = '暂无云图数据';
-    if (meta) meta.textContent = '当前数据库还没有可用于绘制云图的 ETF 因子数据。';
-    return;
-  }
-  const maxSize = Math.max(...nodes.map(n => Number(n.visual_size || 1)), 1);
-  wrap.innerHTML = nodes.map(n => {
-    const span = Math.max(1, Math.min(3, Math.round(Number(n.visual_size || 1) / maxSize * 3)));
-    const score = fmt(n.factor_score);
-    const rel = fmt(n.relative_strength);
-    return `<article class="market-tile ${n.direction || 'flat'}" style="grid-column: span ${span}">
-      <div class="market-code">${n.code}</div>
-      <div class="market-name" title="${n.name || ''}">${n.name || ''} · ${n.category || ''}</div>
-      <div class="market-pct">${fmtPct(n.pct_chg)}</div>
-      <div class="market-meta">
-        <span>成交额 ${fmtAmount(n.amount)}</span>
-        <span>因子 ${score} · 相对强度 ${rel}</span>
-      </div>
-    </article>`;
-  }).join('');
-  if (meta) {
-    const s = data.summary || {};
-    meta.textContent = `日期：${data.trade_date || '--'}；上涨 ${s.up || 0}、下跌 ${s.down || 0}、震荡 ${s.flat || 0}；平均因子 ${fmt(s.avg_score)}。`;
-  }
-}
-async function loadMarketMap() {
-  try {
-    let res = await fetch(apiUrl('market-map'));
-    if (!res.ok) {
-      res = await fetch(staticUrl('market-map.json'), {cache: 'no-store'});
-    }
-    if (!res.ok) throw new Error(`API ${res.status}: ${res.statusText}`);
-    renderMarketMap(await res.json());
-  } catch (err) {
-    const wrap = document.getElementById('market-map');
-    const meta = document.getElementById('market-map-meta');
-    if (wrap) wrap.textContent = '云图加载失败';
-    if (meta) meta.textContent = `大盘云图接口请求失败：${err.message}`;
-  }
-}
-async function load() {
-  try {
-    let res = await fetch(apiUrl('signal/latest'));
-    if (!res.ok) {
-      res = await fetch(staticUrl('latest-signal.json'), {cache: 'no-store'});
-    }
-    if (!res.ok) throw new Error(`API ${res.status}: ${res.statusText}`);
-    const data = await res.json();
-    const s = data.signal;
-    if (!s) {
-      document.getElementById('signal').textContent = '暂无信号';
-      return;
-    }
-    document.getElementById('signal').innerHTML = `<span class="badge ${s.signal}">${s.signal}</span>`;
-    document.getElementById('signal-meta').textContent = `日期：${s.trade_date}`;
-    document.getElementById('score').textContent = fmt(s.composite_score);
-    document.getElementById('confidence').textContent = fmt(s.confidence);
-    document.getElementById('triggered').textContent = (s.triggered_etfs || []).join(', ') || '无';
-    document.getElementById('explanation').textContent = s.explanation || '--';
-    await loadMarketMap();
-    document.getElementById('factors').innerHTML = data.factors.map(f => `<tr>${td('代码', f.code)}${td('名称', f.name)}${td('日期', f.trade_date)}${td('折溢价近似', fmt(f.premium_discount))}${td('放量', fmt(f.volume_spike))}${td('相对强度', fmt(f.relative_strength))}${td('因子得分', `<b>${fmt(f.factor_score)}</b>`)}${td('可信度', fmt(f.confidence))}${td('解释', f.explanation || '')}</tr>`).join('');
-  } catch (err) {
-    document.getElementById('signal').textContent = '加载失败';
-    document.getElementById('signal-meta').textContent = `接口请求失败：${err.message}`;
-  }
-}
-document.getElementById('run').onclick = async () => {
-  const btn = document.getElementById('run'); btn.disabled = true; btn.textContent = '更新中...';
-  try { await fetch(apiUrl('run-update'), {method:'POST'}); await load(); await loadMarketMap(); } finally { btn.disabled = false; btn.textContent = '立即更新数据'; }
-};
+const CLOUD_URL = new URL('data/market-cloud.json', window.location.href).toString();
+let cloudData = null; let activeType = 'industry';
+const fmtPct=n=>Number.isFinite(Number(n))?`${Number(n).toFixed(2)}%`:'--';
+const fmtAmount=n=>{const v=Number(n||0); if(!v)return'--'; if(v>=1e8)return`${(v/1e8).toFixed(1)}亿`; return`${(v/1e4).toFixed(0)}万`;};
+function tile(n){const span=Math.max(1,Math.min(3,Math.round(Number(n.visual_size||1)/8))); return `<article class="tile ${n.direction||'flat'}" style="grid-column:span ${span}"><div class="code">${n.code||''}</div><div class="name" title="${n.name||''}">${n.name||''}</div><div class="pct">${fmtPct(n.pct_chg)}</div><div class="meta"><span>成交额 ${fmtAmount(n.amount)}</span><span>最新 ${Number.isFinite(Number(n.latest))?Number(n.latest).toFixed(2):'--'}</span></div></article>`;}
+function countUp(arr){return (arr||[]).filter(x=>Number(x.pct_chg)>0.2).length;}
+function render(){ if(!cloudData)return; document.getElementById('trade-date').textContent=cloudData.trade_date||'--'; document.getElementById('index-up').textContent=`${countUp(cloudData.indices)}/${(cloudData.indices||[]).length}`; document.getElementById('industry-up').textContent=`${countUp(cloudData.industry)}/${(cloudData.industry||[]).length}`; document.getElementById('concept-up').textContent=`${countUp(cloudData.concept)}/${(cloudData.concept||[]).length}`; document.getElementById('index-cloud').innerHTML=(cloudData.indices||[]).map(tile).join('')||'暂无指数数据'; const nodes=cloudData[activeType]||[]; document.getElementById('board-cloud').innerHTML=nodes.map(tile).join('')||'暂无板块数据'; document.getElementById('board-meta').textContent=`${activeType==='industry'?'行业板块':'概念板块'}：上涨 ${countUp(nodes)} / ${nodes.length}；更新时间 ${cloudData.updated_at||'--'}`; }
+async function load(){try{const res=await fetch(CLOUD_URL,{cache:'no-store'}); if(!res.ok)throw new Error(res.status); cloudData=await res.json(); render();}catch(e){document.getElementById('index-cloud').textContent='云图数据加载失败';document.getElementById('board-cloud').textContent=e.message;}}
+document.querySelectorAll('.switch').forEach(btn=>btn.onclick=()=>{activeType=btn.dataset.type;document.querySelectorAll('.switch').forEach(b=>b.classList.toggle('active',b===btn));render();});
 load();
 </script>
 </body>
