@@ -78,6 +78,42 @@
     button:focus-visible { outline: 3px solid rgba(37,99,235,.3); outline-offset: 2px; }
     pre { white-space: pre-wrap; background:#0f172a; color:#dbeafe; padding:12px; border-radius:10px; max-height:240px; overflow:auto; }
 
+    .section-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:12px; }
+    .section-head h2 { margin-bottom:4px; }
+    .market-map {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-auto-rows: minmax(112px, auto);
+      gap: 10px;
+    }
+    .market-tile {
+      position: relative;
+      min-height: 112px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+    .market-tile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .16;
+      background: var(--tile-color, #94a3b8);
+    }
+    .market-tile > * { position: relative; z-index: 1; }
+    .market-tile.up { --tile-color: #dc2626; border-color: rgba(220,38,38,.18); }
+    .market-tile.down { --tile-color: #16a34a; border-color: rgba(22,163,74,.18); }
+    .market-tile.flat { --tile-color: #64748b; }
+    .market-code { font-weight: 900; font-size: 18px; letter-spacing: -.02em; }
+    .market-name { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .market-pct { margin-top: 8px; font-size: 24px; line-height: 1; font-weight: 900; }
+    .market-meta { margin-top: 8px; color: #475569; font-size: 12px; display:grid; gap:2px; }
+    .map-legend { display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px; }
+    .legend-dot { display:inline-block; width:9px; height:9px; border-radius:99px; margin-right:4px; vertical-align:middle; }
+    .dot-up { background:#dc2626; } .dot-down { background:#16a34a; } .dot-flat { background:#64748b; }
+
     @media (max-width: 920px) {
       .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -92,6 +128,12 @@
       #signal-meta { font-size: 13px; color: var(--muted); }
       #triggered.metric { font-size: clamp(22px, 7vw, 30px); }
       button { width: 100%; margin-top: 4px; }
+
+      .section-head { display:block; }
+      .market-map { grid-template-columns: 1fr 1fr; gap:8px; }
+      .market-tile { min-height: 104px; padding: 10px; }
+      .market-code { font-size: 16px; }
+      .market-pct { font-size: 21px; }
 
       .responsive-table { min-width: 0; }
       .responsive-table thead { display: none; }
@@ -167,6 +209,22 @@
       <p class="muted">说明：免费日频接口无法稳定提供 ETF 实时 IOPV，MVP 用 ETF 相对跟踪指数日涨跌近似折溢价因子；成交量放大和相对强度为另外两个因子。</p>
     </section>
 
+
+    <section class="card section">
+      <div class="section-head">
+        <div>
+          <h2>大盘云图</h2>
+          <p id="market-map-meta" class="muted">按已追踪宽基 ETF 的涨跌、成交额与因子得分绘制；红色偏强，绿色偏弱。</p>
+        </div>
+        <div class="map-legend" aria-label="云图图例">
+          <span><i class="legend-dot dot-up"></i>上涨/偏强</span>
+          <span><i class="legend-dot dot-down"></i>下跌/偏弱</span>
+          <span><i class="legend-dot dot-flat"></i>震荡</span>
+        </div>
+      </div>
+      <div id="market-map" class="market-map" aria-live="polite">加载中...</div>
+    </section>
+
     <section class="card section">
       <h2>单只 ETF 因子表</h2>
       <div class="table-wrap">
@@ -180,6 +238,56 @@ const API_BASE = new URL(window.A_SHARE_ETF_API_BASE || 'api/', window.location.
 const apiUrl = path => new URL(path, API_BASE).toString();
 const fmt = n => (n === null || n === undefined || Number.isNaN(Number(n))) ? '--' : Number(n).toFixed(1);
 const td = (label, value) => `<td data-label="${label}">${value ?? ''}</td>`;
+
+const fmtPct = n => (n === null || n === undefined || Number.isNaN(Number(n))) ? '--' : `${Number(n).toFixed(2)}%`;
+const fmtAmount = n => {
+  const v = Number(n || 0);
+  if (!v) return '--';
+  if (v >= 100000000) return `${(v / 100000000).toFixed(1)}亿`;
+  return `${(v / 10000).toFixed(0)}万`;
+};
+function renderMarketMap(data) {
+  const wrap = document.getElementById('market-map');
+  const meta = document.getElementById('market-map-meta');
+  if (!wrap) return;
+  const nodes = data?.nodes || [];
+  if (!nodes.length) {
+    wrap.textContent = '暂无云图数据';
+    if (meta) meta.textContent = '当前数据库还没有可用于绘制云图的 ETF 因子数据。';
+    return;
+  }
+  const maxSize = Math.max(...nodes.map(n => Number(n.visual_size || 1)), 1);
+  wrap.innerHTML = nodes.map(n => {
+    const span = Math.max(1, Math.min(3, Math.round(Number(n.visual_size || 1) / maxSize * 3)));
+    const score = fmt(n.factor_score);
+    const rel = fmt(n.relative_strength);
+    return `<article class="market-tile ${n.direction || 'flat'}" style="grid-column: span ${span}">
+      <div class="market-code">${n.code}</div>
+      <div class="market-name" title="${n.name || ''}">${n.name || ''} · ${n.category || ''}</div>
+      <div class="market-pct">${fmtPct(n.pct_chg)}</div>
+      <div class="market-meta">
+        <span>成交额 ${fmtAmount(n.amount)}</span>
+        <span>因子 ${score} · 相对强度 ${rel}</span>
+      </div>
+    </article>`;
+  }).join('');
+  if (meta) {
+    const s = data.summary || {};
+    meta.textContent = `日期：${data.trade_date || '--'}；上涨 ${s.up || 0}、下跌 ${s.down || 0}、震荡 ${s.flat || 0}；平均因子 ${fmt(s.avg_score)}。`;
+  }
+}
+async function loadMarketMap() {
+  try {
+    const res = await fetch(apiUrl('market-map'));
+    if (!res.ok) throw new Error(`API ${res.status}: ${res.statusText}`);
+    renderMarketMap(await res.json());
+  } catch (err) {
+    const wrap = document.getElementById('market-map');
+    const meta = document.getElementById('market-map-meta');
+    if (wrap) wrap.textContent = '云图加载失败';
+    if (meta) meta.textContent = `大盘云图接口请求失败：${err.message}`;
+  }
+}
 async function load() {
   try {
     const res = await fetch(apiUrl('signal/latest'));
@@ -196,6 +304,7 @@ async function load() {
     document.getElementById('confidence').textContent = fmt(s.confidence);
     document.getElementById('triggered').textContent = (s.triggered_etfs || []).join(', ') || '无';
     document.getElementById('explanation').textContent = s.explanation || '--';
+    await loadMarketMap();
     document.getElementById('factors').innerHTML = data.factors.map(f => `<tr>${td('代码', f.code)}${td('名称', f.name)}${td('日期', f.trade_date)}${td('折溢价近似', fmt(f.premium_discount))}${td('放量', fmt(f.volume_spike))}${td('相对强度', fmt(f.relative_strength))}${td('因子得分', `<b>${fmt(f.factor_score)}</b>`)}${td('可信度', fmt(f.confidence))}${td('解释', f.explanation || '')}</tr>`).join('');
   } catch (err) {
     document.getElementById('signal').textContent = '加载失败';
@@ -204,7 +313,7 @@ async function load() {
 }
 document.getElementById('run').onclick = async () => {
   const btn = document.getElementById('run'); btn.disabled = true; btn.textContent = '更新中...';
-  try { await fetch(apiUrl('run-update'), {method:'POST'}); await load(); } finally { btn.disabled = false; btn.textContent = '立即更新数据'; }
+  try { await fetch(apiUrl('run-update'), {method:'POST'}); await load(); await loadMarketMap(); } finally { btn.disabled = false; btn.textContent = '立即更新数据'; }
 };
 load();
 </script>
