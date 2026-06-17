@@ -2,7 +2,7 @@ const ORIGIN_API = 'http://a-share-etf-api.980822.xyz/a-share-etf/api';
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
-  const path = context.params.path || '';
+  const path = Array.isArray(context.params.path) ? context.params.path.join('/') : (context.params.path || '');
   const upstream = `${ORIGIN_API}/${path}${url.search}`;
   const init = {
     method: context.request.method,
