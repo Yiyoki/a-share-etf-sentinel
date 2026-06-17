@@ -8,6 +8,7 @@ export async function onRequest(context) {
     method: context.request.method,
     headers: new Headers(context.request.headers),
   };
+  init.headers.delete('Host');
   init.headers.delete('cf-connecting-ip');
   init.headers.delete('cf-ipcountry');
   init.headers.delete('cf-ray');
