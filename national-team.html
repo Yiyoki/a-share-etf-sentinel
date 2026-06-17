@@ -282,26 +282,26 @@ function renderMarketMap(data) {
 }
 async function loadMarketMap() {
   try {
-    let res = await fetch(apiUrl('market-map'));
+    let res = await fetch(staticUrl('market-map.json'), {cache: 'no-store'});
     if (!res.ok) {
-      res = await fetch(staticUrl('market-map.json'), {cache: 'no-store'});
+      res = await fetch(apiUrl('market-map'));
     }
-    if (!res.ok) throw new Error(`API ${res.status}: ${res.statusText}`);
+    if (!res.ok) throw new Error(`数据 ${res.status}: ${res.statusText}`);
     renderMarketMap(await res.json());
   } catch (err) {
     const wrap = document.getElementById('market-map');
     const meta = document.getElementById('market-map-meta');
     if (wrap) wrap.textContent = '云图加载失败';
-    if (meta) meta.textContent = `大盘云图接口请求失败：${err.message}`;
+    if (meta) meta.textContent = `大盘云图数据请求失败：${err.message}`;
   }
 }
 async function load() {
   try {
-    let res = await fetch(apiUrl('signal/latest'));
+    let res = await fetch(staticUrl('latest-signal.json'), {cache: 'no-store'});
     if (!res.ok) {
-      res = await fetch(staticUrl('latest-signal.json'), {cache: 'no-store'});
+      res = await fetch(apiUrl('signal/latest'));
     }
-    if (!res.ok) throw new Error(`API ${res.status}: ${res.statusText}`);
+    if (!res.ok) throw new Error(`数据 ${res.status}: ${res.statusText}`);
     const data = await res.json();
     const s = data.signal;
     if (!s) {
