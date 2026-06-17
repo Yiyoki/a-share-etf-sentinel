@@ -22,3 +22,18 @@ export async function onRequest(context) {
   headers.set('Cache-Control', context.request.method === 'GET' ? 'public, max-age=60' : 'no-store');
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
+
+export const onRequestGet = onRequest;
+export const onRequestHead = onRequest;
+export const onRequestPost = onRequest;
+export function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Max-Age': '86400',
+    },
+  });
+}
