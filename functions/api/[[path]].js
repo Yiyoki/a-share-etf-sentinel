@@ -1,22 +1,17 @@
-const ORIGIN_API = 'http://39.107.137.91.sslip.io/a-share-etf/api';
+const ORIGIN_API = 'http://39.107.137.91/a-share-etf/api';
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
   const path = Array.isArray(context.params.path) ? context.params.path.join('/') : (context.params.path || '');
   const upstream = `${ORIGIN_API}/${path}${url.search}`;
-  const init = {
+  const response = await fetch(upstream, {
     method: context.request.method,
-    headers: new Headers({
+    headers: {
       'Accept': context.request.headers.get('Accept') || 'application/json',
       'User-Agent': 'Mozilla/5.0 (compatible; AShareETFSentinelPagesProxy/1.0)',
-    }),
-  };
-  const contentType = context.request.headers.get('Content-Type');
-  if (contentType) init.headers.set('Content-Type', contentType);
-  if (!['GET', 'HEAD'].includes(context.request.method)) {
-    init.body = context.request.body;
-  }
-  const response = await fetch(upstream, init);
+    },
+    body: ['GET', 'HEAD'].includes(context.request.method) ? undefined : context.request.body,
+  });
   const headers = new Headers(response.headers);
   headers.set('Access-Control-Allow-Origin', '*');
   headers.set('Cache-Control', context.request.method === 'GET' ? 'public, max-age=60' : 'no-store');
