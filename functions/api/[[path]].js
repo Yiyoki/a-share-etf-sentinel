@@ -1,0 +1,24 @@
+const ORIGIN_API = 'http://39.107.137.91/a-share-etf/api';
+
+export async function onRequest(context) {
+  const url = new URL(context.request.url);
+  const path = context.params.path || '';
+  const upstream = `${ORIGIN_API}/${path}${url.search}`;
+  const init = {
+    method: context.request.method,
+    headers: new Headers(context.request.headers),
+  };
+  init.headers.set('Host', '39.107.137.91');
+  init.headers.delete('cf-connecting-ip');
+  init.headers.delete('cf-ipcountry');
+  init.headers.delete('cf-ray');
+  init.headers.delete('cf-visitor');
+  if (!['GET', 'HEAD'].includes(context.request.method)) {
+    init.body = context.request.body;
+  }
+  const response = await fetch(upstream, init);
+  const headers = new Headers(response.headers);
+  headers.set('Access-Control-Allow-Origin', '*');
+  headers.set('Cache-Control', context.request.method === 'GET' ? 'public, max-age=60' : 'no-store');
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
