@@ -1,4 +1,4 @@
-const ORIGIN_API = 'http://39.107.137.91/a-share-etf/api';
+const ORIGIN_API = 'http://a-share-etf-api.980822.xyz/a-share-etf/api';
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
@@ -6,13 +6,13 @@ export async function onRequest(context) {
   const upstream = `${ORIGIN_API}/${path}${url.search}`;
   const init = {
     method: context.request.method,
-    headers: new Headers(context.request.headers),
+    headers: new Headers({
+      'Accept': context.request.headers.get('Accept') || 'application/json',
+      'User-Agent': 'Mozilla/5.0 (compatible; AShareETFSentinelPagesProxy/1.0)',
+    }),
   };
-  init.headers.delete('Host');
-  init.headers.delete('cf-connecting-ip');
-  init.headers.delete('cf-ipcountry');
-  init.headers.delete('cf-ray');
-  init.headers.delete('cf-visitor');
+  const contentType = context.request.headers.get('Content-Type');
+  if (contentType) init.headers.set('Content-Type', contentType);
   if (!['GET', 'HEAD'].includes(context.request.method)) {
     init.body = context.request.body;
   }
