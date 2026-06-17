@@ -235,7 +235,9 @@
   </main>
 <script>
 const API_BASE = new URL(window.A_SHARE_ETF_API_BASE || 'api/', window.location.href);
+const STATIC_BASE = new URL('data/', window.location.href);
 const apiUrl = path => new URL(path, API_BASE).toString();
+const staticUrl = path => new URL(path, STATIC_BASE).toString();
 const fmt = n => (n === null || n === undefined || Number.isNaN(Number(n))) ? '--' : Number(n).toFixed(1);
 const td = (label, value) => `<td data-label="${label}">${value ?? ''}</td>`;
 
@@ -278,7 +280,10 @@ function renderMarketMap(data) {
 }
 async function loadMarketMap() {
   try {
-    const res = await fetch(apiUrl('market-map'));
+    let res = await fetch(apiUrl('market-map'));
+    if (!res.ok) {
+      res = await fetch(staticUrl('market-map.json'), {cache: 'no-store'});
+    }
     if (!res.ok) throw new Error(`API ${res.status}: ${res.statusText}`);
     renderMarketMap(await res.json());
   } catch (err) {
@@ -290,7 +295,10 @@ async function loadMarketMap() {
 }
 async function load() {
   try {
-    const res = await fetch(apiUrl('signal/latest'));
+    let res = await fetch(apiUrl('signal/latest'));
+    if (!res.ok) {
+      res = await fetch(staticUrl('latest-signal.json'), {cache: 'no-store'});
+    }
     if (!res.ok) throw new Error(`API ${res.status}: ${res.statusText}`);
     const data = await res.json();
     const s = data.signal;
