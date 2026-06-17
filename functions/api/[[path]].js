@@ -1,4 +1,4 @@
-const ORIGIN_API = 'http://39.107.137.91/a-share-etf/api';
+const ORIGIN_API = 'http://39.107.137.91.sslip.io/a-share-etf/api';
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
