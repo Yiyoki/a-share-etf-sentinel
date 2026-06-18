@@ -22,3 +22,8 @@ Cloudflare Pages no-build：
 
 - Build command：空
 - Output directory：`.`
+
+## 访问地址
+
+- 自定义域名：https://kikistock.980822.xyz/
+- Pages 域名：https://a-share-etf-sentinel.pages.dev/
