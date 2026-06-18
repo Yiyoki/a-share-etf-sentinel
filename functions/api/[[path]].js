@@ -77,7 +77,16 @@ export async function onRequest(context) {
   const url = new URL(context.request.url);
   const path = Array.isArray(context.params.path) ? context.params.path.join('/') : (context.params.path || '');
   if (context.request.method === 'GET' && path === 'market-cloud') {
-    return marketCloudResponse();
+    try {
+      return await marketCloudResponse();
+    } catch (err) {
+      const fallback = await fetch(new URL('/data/market-cloud.json', url.origin), { cf: { cacheTtl: 0, cacheEverything: false } });
+      const headers = new Headers(fallback.headers);
+      headers.set('Access-Control-Allow-Origin', '*');
+      headers.set('Cache-Control', 'no-store');
+      headers.set('X-Market-Cloud-Fallback', 'static-json');
+      return new Response(fallback.body, { status: fallback.status, statusText: fallback.statusText, headers });
+    }
   }
   const upstream = `${ORIGIN_API}/${path}${url.search}`;
   const response = await fetch(upstream, {
