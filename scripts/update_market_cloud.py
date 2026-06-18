@@ -61,7 +61,7 @@ def fetch_json_local(session: requests.Session, url: str, params: dict[str, str]
 def fetch_json_remote(url: str, params: dict[str, str]) -> dict[str, Any]:
     full_url = f"{url}?{urlencode(params)}"
     code = r'''
-import json, sys, requests
+import json, sys, time, requests
 url = sys.argv[1]
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/125 Safari/537.36",
@@ -69,9 +69,17 @@ headers = {
     "Accept": "application/json,text/plain,*/*",
     "Accept-Language": "zh-CN,zh;q=0.9",
 }
-resp = requests.get(url, headers=headers, timeout=25)
-resp.raise_for_status()
-sys.stdout.write(resp.text)
+last = None
+for attempt in range(4):
+    try:
+        resp = requests.get(url, headers=headers, timeout=30)
+        resp.raise_for_status()
+        sys.stdout.write(resp.text)
+        raise SystemExit(0)
+    except Exception as exc:
+        last = exc
+        time.sleep(2 * (attempt + 1))
+raise RuntimeError(last)
 '''
     remote_cmd = f"python3 -c {shlex.quote(code)} {shlex.quote(full_url)}"
     proc = subprocess.run(
@@ -148,7 +156,7 @@ def fetch_boards(session: requests.Session, board_type: str, fs: str, limit: int
             "np": "1",
             "fltt": "2",
             "invt": "2",
-            "fid": "f3",
+            "fid": "f6",
             "fs": fs,
             "fields": "f12,f14,f2,f3,f5,f6,f20",
         },
