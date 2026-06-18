@@ -46,7 +46,7 @@ async function marketCloudResponse() {
     fltt: '2', invt: '2', fields: 'f12,f14,f2,f3,f5,f6,f20', secids: INDEX_SECIDS.join(','), _: String(Date.now()),
   });
   const boardParams = (fs) => new URLSearchParams({
-    pn: '1', pz: '36', po: '1', np: '1', fltt: '2', invt: '2', fid: 'f3', fs, fields: 'f12,f14,f2,f3,f5,f6,f20', _: String(Date.now()),
+    pn: '1', pz: '36', po: '1', np: '1', fltt: '2', invt: '2', fid: 'f6', fs, fields: 'f12,f14,f2,f3,f5,f6,f20', _: String(Date.now()),
   });
   const industryUrl = new URL('https://push2.eastmoney.com/api/qt/clist/get');
   industryUrl.search = boardParams('m:90+t:2');
