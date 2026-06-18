@@ -1,256 +1,306 @@
 {
   "signal": {
     "trade_date": "2026-06-18",
-    "signal": "watch",
-    "composite_score": 51.57145041232604,
+    "signal": "neutral",
+    "composite_score": 44.33145054685428,
     "confidence": 100.0,
-    "triggered_etfs": [
-      "510310"
-    ],
-    "explanation": "510300得分60.9；510310得分67.8；510330得分64.6；510360得分48.5；159919得分43.3；510050得分40.2；512100得分35.8",
-    "created_at": "2026-06-18T02:40:56+00:00"
+    "triggered_etfs": [],
+    "explanation": "510300得分47.0；510310得分49.5；510330得分54.9；510360得分44.3；159919得分50.1；510050得分33.7；512100得分30.8",
+    "created_at": "2026-06-18T03:56:25+00:00"
   },
   "factors": [
     {
+      "code": "510330",
+      "trade_date": "2026-06-18",
+      "premium_discount": 48.56,
+      "volume_spike": 66.51993899324071,
+      "relative_strength": 48.8,
+      "factor_score": 54.91797864763424,
+      "confidence": 100.0,
+      "explanation": "ETF涨跌幅0.00%，指数涨跌幅0.12%；成交量较20日均量36.7%；使用日频相对涨跌近似折溢价。",
+      "created_at": "2026-06-18T03:56:25+00:00",
+      "name": "华夏沪深300ETF",
+      "index_name": "沪深300"
+    },
+    {
       "code": "159919",
       "trade_date": "2026-06-18",
-      "premium_discount": 49.4,
-      "volume_spike": 31.793316050826586,
-      "relative_strength": 49.5,
-      "factor_score": 43.2676606177893,
+      "premium_discount": 49.04,
+      "volume_spike": 51.82515089232172,
+      "relative_strength": 49.2,
+      "factor_score": 50.0628028123126,
       "confidence": 100.0,
-      "explanation": "ETF涨跌幅0.41%，指数涨跌幅0.46%；成交量较20日均量-40.5%；使用日频相对涨跌近似折溢价。",
-      "created_at": "2026-06-18T02:40:56+00:00",
+      "explanation": "ETF涨跌幅0.04%，指数涨跌幅0.12%；成交量较20日均量4.1%；使用日频相对涨跌近似折溢价。",
+      "created_at": "2026-06-18T03:56:25+00:00",
       "name": "嘉实沪深300ETF",
+      "index_name": "沪深300"
+    },
+    {
+      "code": "510310",
+      "trade_date": "2026-06-18",
+      "premium_discount": 49.28,
+      "volume_spike": 49.915465898296866,
+      "relative_strength": 49.4,
+      "factor_score": 49.538413064403905,
+      "confidence": 100.0,
+      "explanation": "ETF涨跌幅0.06%，指数涨跌幅0.12%；成交量较20日均量-0.2%；使用日频相对涨跌近似折溢价。",
+      "created_at": "2026-06-18T03:56:25+00:00",
+      "name": "易方达沪深300ETF",
+      "index_name": "沪深300"
+    },
+    {
+      "code": "510300",
+      "trade_date": "2026-06-18",
+      "premium_discount": 49.52,
+      "volume_spike": 42.271489776259656,
+      "relative_strength": 49.6,
+      "factor_score": 47.00702142169088,
+      "confidence": 100.0,
+      "explanation": "ETF涨跌幅0.08%，指数涨跌幅0.12%；成交量较20日均量-17.2%；使用日频相对涨跌近似折溢价。",
+      "created_at": "2026-06-18T03:56:25+00:00",
+      "name": "华泰柏瑞沪深300ETF",
+      "index_name": "沪深300"
+    },
+    {
+      "code": "510360",
+      "trade_date": "2026-06-18",
+      "premium_discount": 49.16,
+      "volume_spike": 35.113404831460045,
+      "relative_strength": 49.3,
+      "factor_score": 44.28569169101101,
+      "confidence": 100.0,
+      "explanation": "ETF涨跌幅0.05%，指数涨跌幅0.12%；成交量较20日均量-33.1%；使用日频相对涨跌近似折溢价。",
+      "created_at": "2026-06-18T03:56:25+00:00",
+      "name": "广发沪深300ETF",
       "index_name": "沪深300"
     },
     {
       "code": "510050",
       "trade_date": "2026-06-18",
-      "premium_discount": 49.88,
-      "volume_spike": 22.066567284225236,
-      "relative_strength": 49.9,
-      "factor_score": 40.15129854947883,
+      "premium_discount": 48.92,
+      "volume_spike": 5.219100352384011,
+      "relative_strength": 49.1,
+      "factor_score": 33.678685123334404,
       "confidence": 100.0,
-      "explanation": "ETF涨跌幅0.23%，指数涨跌幅0.24%；成交量较20日均量-62.1%；使用日频相对涨跌近似折溢价。",
-      "created_at": "2026-06-18T02:40:56+00:00",
+      "explanation": "ETF涨跌幅-0.03%，指数涨跌幅0.06%；成交量较20日均量-99.5%；使用日频相对涨跌近似折溢价。",
+      "created_at": "2026-06-18T03:56:25+00:00",
       "name": "华夏上证50ETF",
       "index_name": "上证50"
     },
     {
       "code": "512100",
       "trade_date": "2026-06-18",
-      "premium_discount": 48.68,
-      "volume_spike": 11.75653137183253,
-      "relative_strength": 48.9,
-      "factor_score": 35.82278598014138,
+      "premium_discount": 44.24,
+      "volume_spike": 5.101603050265453,
+      "relative_strength": 45.2,
+      "factor_score": 30.829561067592905,
       "confidence": 100.0,
-      "explanation": "ETF涨跌幅0.65%，指数涨跌幅0.76%；成交量较20日均量-85.0%；使用日频相对涨跌近似折溢价。",
-      "created_at": "2026-06-18T02:40:56+00:00",
+      "explanation": "ETF涨跌幅0.28%，指数涨跌幅0.76%；成交量较20日均量-99.8%；使用日频相对涨跌近似折溢价。",
+      "created_at": "2026-06-18T03:56:25+00:00",
       "name": "南方中证1000ETF",
       "index_name": "中证1000"
     }
   ],
   "logs": [
     {
-      "id": 53,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
+      "id": 98,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
       "source": "factor_engine",
       "target": "signals",
       "status": "ok",
       "message": "computed 7 ETF factor rows",
       "rows": 7,
-      "created_at": "2026-06-18T02:40:56+00:00"
+      "created_at": "2026-06-18T03:56:25+00:00"
     },
     {
-      "id": 52,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
+      "id": 97,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
       "source": "eastmoney.index_kline",
       "target": "index:000852",
-      "status": "ok",
-      "message": "",
-      "rows": 90,
-      "created_at": "2026-06-18T02:40:56+00:00"
+      "status": "degraded",
+      "message": "request failed after 3 attempts: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+      "rows": 0,
+      "created_at": "2026-06-18T03:56:25+00:00"
     },
     {
-      "id": 51,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
-      "source": "eastmoney.kline",
+      "id": 96,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
+      "source": "sina.kline",
       "target": "etf:512100",
       "status": "ok",
       "message": "",
       "rows": 90,
-      "created_at": "2026-06-18T02:40:56+00:00"
+      "created_at": "2026-06-18T03:56:20+00:00"
     },
     {
-      "id": 50,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
+      "id": 95,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
       "source": "eastmoney.index_kline",
       "target": "index:000016",
-      "status": "ok",
-      "message": "",
-      "rows": 90,
-      "created_at": "2026-06-18T02:40:55+00:00"
+      "status": "degraded",
+      "message": "request failed after 3 attempts: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+      "rows": 0,
+      "created_at": "2026-06-18T03:56:15+00:00"
     },
     {
-      "id": 49,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
-      "source": "eastmoney.kline",
+      "id": 94,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
+      "source": "sina.kline",
       "target": "etf:510050",
       "status": "ok",
       "message": "",
       "rows": 90,
-      "created_at": "2026-06-18T02:40:55+00:00"
+      "created_at": "2026-06-18T03:56:10+00:00"
     },
     {
-      "id": 48,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
+      "id": 93,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
       "source": "eastmoney.index_kline",
       "target": "index:000300",
       "status": "ok",
       "message": "",
       "rows": 90,
-      "created_at": "2026-06-18T02:40:55+00:00"
+      "created_at": "2026-06-18T03:56:05+00:00"
     },
     {
-      "id": 47,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
+      "id": 92,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
       "source": "eastmoney.kline",
       "target": "etf:159919",
       "status": "ok",
       "message": "",
       "rows": 90,
-      "created_at": "2026-06-18T02:40:54+00:00"
+      "created_at": "2026-06-18T03:56:05+00:00"
     },
     {
-      "id": 46,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
+      "id": 91,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
       "source": "eastmoney.index_kline",
       "target": "index:000300",
-      "status": "degraded",
-      "message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
-      "rows": 0,
-      "created_at": "2026-06-18T02:40:54+00:00"
+      "status": "ok",
+      "message": "",
+      "rows": 90,
+      "created_at": "2026-06-18T03:56:05+00:00"
     },
     {
-      "id": 45,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
-      "source": "sina.kline",
+      "id": 90,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
+      "source": "eastmoney.kline",
       "target": "etf:510360",
       "status": "ok",
       "message": "",
       "rows": 90,
-      "created_at": "2026-06-18T02:40:54+00:00"
+      "created_at": "2026-06-18T03:56:04+00:00"
     },
     {
-      "id": 44,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
+      "id": 89,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
       "source": "eastmoney.index_kline",
       "target": "index:000300",
-      "status": "degraded",
-      "message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
-      "rows": 0,
-      "created_at": "2026-06-18T02:40:53+00:00"
+      "status": "ok",
+      "message": "",
+      "rows": 90,
+      "created_at": "2026-06-18T03:56:04+00:00"
     },
     {
-      "id": 43,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
-      "source": "sina.kline",
+      "id": 88,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
+      "source": "eastmoney.kline",
       "target": "etf:510330",
       "status": "ok",
       "message": "",
       "rows": 90,
-      "created_at": "2026-06-18T02:40:53+00:00"
+      "created_at": "2026-06-18T03:56:04+00:00"
     },
     {
-      "id": 42,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
+      "id": 87,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
       "source": "eastmoney.index_kline",
       "target": "index:000300",
-      "status": "degraded",
-      "message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
-      "rows": 0,
-      "created_at": "2026-06-18T02:40:53+00:00"
+      "status": "ok",
+      "message": "",
+      "rows": 90,
+      "created_at": "2026-06-18T03:56:03+00:00"
     },
     {
-      "id": 41,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
-      "source": "sina.kline",
+      "id": 86,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
+      "source": "eastmoney.kline",
       "target": "etf:510310",
       "status": "ok",
       "message": "",
       "rows": 90,
-      "created_at": "2026-06-18T02:40:53+00:00"
+      "created_at": "2026-06-18T03:56:03+00:00"
     },
     {
-      "id": 40,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
+      "id": 85,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
       "source": "eastmoney.index_kline",
       "target": "index:000300",
-      "status": "degraded",
-      "message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
-      "rows": 0,
-      "created_at": "2026-06-18T02:40:53+00:00"
+      "status": "ok",
+      "message": "",
+      "rows": 90,
+      "created_at": "2026-06-18T03:56:03+00:00"
     },
     {
-      "id": 39,
-      "run_id": "af6e75c0-b05f-41be-b66e-aea71e452c78",
-      "source": "sina.kline",
+      "id": 84,
+      "run_id": "636db625-8af8-4180-89ac-0a8128faad44",
+      "source": "eastmoney.kline",
       "target": "etf:510300",
       "status": "ok",
       "message": "",
       "rows": 90,
-      "created_at": "2026-06-18T02:40:52+00:00"
+      "created_at": "2026-06-18T03:56:02+00:00"
     },
     {
-      "id": 38,
-      "run_id": "f94e1c79-f414-4c60-9a21-cd559af28d78",
+      "id": 83,
+      "run_id": "034d6a9f-0737-4b2d-87c3-7c50b542703d",
       "source": "factor_engine",
       "target": "signals",
       "status": "ok",
       "message": "computed 7 ETF factor rows",
       "rows": 7,
-      "created_at": "2026-06-17T15:30:10+00:00"
+      "created_at": "2026-06-18T03:45:03+00:00"
     },
     {
-      "id": 37,
-      "run_id": "f94e1c79-f414-4c60-9a21-cd559af28d78",
+      "id": 82,
+      "run_id": "034d6a9f-0737-4b2d-87c3-7c50b542703d",
       "source": "eastmoney.index_kline",
       "target": "index:000852",
       "status": "degraded",
-      "message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+      "message": "request failed after 3 attempts: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
       "rows": 0,
-      "created_at": "2026-06-17T15:30:10+00:00"
+      "created_at": "2026-06-18T03:45:03+00:00"
     },
     {
-      "id": 36,
-      "run_id": "f94e1c79-f414-4c60-9a21-cd559af28d78",
-      "source": "sina.kline",
+      "id": 81,
+      "run_id": "034d6a9f-0737-4b2d-87c3-7c50b542703d",
+      "source": "eastmoney.kline",
       "target": "etf:512100",
       "status": "ok",
       "message": "",
       "rows": 90,
-      "created_at": "2026-06-17T15:30:10+00:00"
+      "created_at": "2026-06-18T03:44:58+00:00"
     },
     {
-      "id": 35,
-      "run_id": "f94e1c79-f414-4c60-9a21-cd559af28d78",
+      "id": 80,
+      "run_id": "034d6a9f-0737-4b2d-87c3-7c50b542703d",
       "source": "eastmoney.index_kline",
       "target": "index:000016",
-      "status": "degraded",
-      "message": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
-      "rows": 0,
-      "created_at": "2026-06-17T15:30:10+00:00"
+      "status": "ok",
+      "message": "",
+      "rows": 90,
+      "created_at": "2026-06-18T03:44:56+00:00"
     },
     {
-      "id": 34,
-      "run_id": "f94e1c79-f414-4c60-9a21-cd559af28d78",
-      "source": "sina.kline",
+      "id": 79,
+      "run_id": "034d6a9f-0737-4b2d-87c3-7c50b542703d",
+      "source": "eastmoney.kline",
       "target": "etf:510050",
       "status": "ok",
       "message": "",
       "rows": 90,
-      "created_at": "2026-06-17T15:30:10+00:00"
+      "created_at": "2026-06-18T03:44:55+00:00"
     }
   ]
 }
